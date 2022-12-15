@@ -1,34 +1,59 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { useEffect, useState } from "react";
+import {
+  connect,
+  disconnect,
+  ConnectedStarknetWindowObject,
+} from "@argent/get-starknet";
+import { WalletDetails } from "./WalletDetails";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [connection, setConnection] = useState<
+    ConnectedStarknetWindowObject | undefined
+  >();
+
+  useEffect(() => {
+    const connectToStarknet = async () => {
+      const connection = await connect({ modalMode: "neverAsk" }); // try to reconnect to a previously used wallet
+
+      if (connection && connection.isConnected) {
+        setConnection(connection);
+      }
+    };
+    connectToStarknet();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen space-y-4">
-      <div className="flex flex-row justify-center space-x-4">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" alt="Vite logo" className="h-16 w-16" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} alt="React logo" className="h-16 w-16" />
-        </a>
-      </div>
-      <h1 className="text-4xl font-bold">Vite + React</h1>
+      <h1 className="text-4xl font-bold">Webwallet demo dapp</h1>
       <div className="flex flex-col items-center justify-center space-y-4">
-        <button
-          onClick={() => setCount((count) => count + 1)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        {!connection ? (
+          <button
+            onClick={async () => {
+              const connection = await connect();
+
+              if (connection && connection.isConnected) {
+                setConnection(connection);
+              }
+            }}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Connect wallet
+          </button>
+        ) : (
+          <>
+            <WalletDetails wallet={connection} />
+            <button
+              onClick={async () => {
+                await disconnect();
+                setConnection(undefined);
+              }}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Disconnect wallet
+            </button>
+          </>
+        )}
       </div>
-      <p className="text-center text-gray-400 text-sm">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   );
 }
