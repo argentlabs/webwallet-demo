@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen space-y-4">
-      <h1 className="text-4xl font-bold">Webwallet demo dapp</h1>
+      <h1 className="text-4xl font-bold">Some Cool Dapp!</h1>
       <div className="flex flex-col items-center justify-center space-y-4">
         {!connection ? (
           <button
