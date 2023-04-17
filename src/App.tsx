@@ -6,6 +6,16 @@ import {
 } from "@argent/get-starknet";
 import { WalletDetails } from "./WalletDetails";
 
+/**
+ * Map a target URL to a network ID
+ * http://localhost:3005 -> goerli-alpha-2
+ * https://web.dev.argent47.net -> goerli-alpha-2
+ * https://web.hydrogen.argent47.net -> goerli-alpha
+ * https://web.staging.argent47.net -> mainnet-alpha
+ * https://web.argent.xyz -> mainnet-alpha
+ */
+const WW_URL = "https://web.argent.xyz";
+
 function App() {
   const [connection, setConnection] = useState<
     ConnectedStarknetWindowObject | undefined
@@ -13,7 +23,10 @@ function App() {
 
   useEffect(() => {
     const connectToStarknet = async () => {
-      const connection = await connect({ modalMode: "neverAsk" }); // try to reconnect to a previously used wallet
+      const connection = await connect({
+        modalMode: "neverAsk",
+        webWalletUrl: WW_URL,
+      }); // try to reconnect to a previously used wallet
 
       if (connection && connection.isConnected) {
         setConnection(connection);
@@ -29,7 +42,9 @@ function App() {
         {!connection ? (
           <button
             onClick={async () => {
-              const connection = await connect();
+              const connection = await connect({
+                webWalletUrl: WW_URL,
+              });
 
               if (connection && connection.isConnected) {
                 setConnection(connection);
