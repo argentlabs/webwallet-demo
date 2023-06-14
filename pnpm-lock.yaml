@@ -1,9 +1,13 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   '@argent/get-starknet':
-    specifier: ^6.1.2
-    version: 6.1.2(starknet@4.22.0)(zod@3.21.4)
+    specifier: ^6.4.3
+    version: 6.4.3(starknet@4.22.0)(zod@3.21.4)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -39,14 +43,17 @@ devDependencies:
   vite:
     specifier: ^4.0.0
     version: 4.0.1
+  ws:
+    specifier: ^8.13.0
+    version: 8.13.0
 
 packages:
 
-  /@argent/get-starknet@6.1.2(starknet@4.22.0)(zod@3.21.4):
-    resolution: {integrity: sha512-vuIiZSMCzuysOtMj4Hz5kCIOb9vPOL9vVOdNVNjGO80K7NKcx6bmcDVENfwQNu8qArNAyii6ka9EWxxbwuVhBg==}
+  /@argent/get-starknet@6.4.3(starknet@4.22.0)(zod@3.21.4):
+    resolution: {integrity: sha512-k7vX6KksDXuubui/zG++GnfNL/H9bvT9ujEDoycp6RRxHkK/cwK6E+ntVs+OlUd0Mb6mh9dcXqFi5OkfZA55IA==}
     dependencies:
-      '@argent/web-sdk': 6.1.1(starknet@4.22.0)(zod@3.21.4)
-      '@argent/x-window': 6.1.1(starknet@4.22.0)(zod@3.21.4)
+      '@argent/web-sdk': 6.4.0(starknet@4.22.0)(zod@3.21.4)
+      '@argent/x-window': 6.4.0(starknet@4.22.0)(zod@3.21.4)
       bowser: 2.11.0
       get-starknet-core: 2.0.0(starknet@4.22.0)
       lodash-es: 4.17.21
@@ -56,12 +63,12 @@ packages:
       - zod
     dev: false
 
-  /@argent/web-sdk@6.1.1(starknet@4.22.0)(zod@3.21.4):
-    resolution: {integrity: sha512-Y0fe1Kx/MLwY1dnnKKinOLWoSqN7mC1O+O3Yj+tKMMul5xgTFOVgGyVARkI7yIFgXlX3QryDYokeyJOLVuhrRg==}
+  /@argent/web-sdk@6.4.0(starknet@4.22.0)(zod@3.21.4):
+    resolution: {integrity: sha512-Q52vPkpp39MVXC8FkH5RiNRBQbHiRgSPvtPlR45pSCpLfVm9dCHWDUzzunPXB6GXvgEt/m+cmpchz6rXIb3UZg==}
     peerDependencies:
       starknet: ^4.21.0
     dependencies:
-      '@argent/x-window': 6.1.1(starknet@4.22.0)(zod@3.21.4)
+      '@argent/x-window': 6.4.0(starknet@4.22.0)(zod@3.21.4)
       get-starknet-core: 2.0.0(starknet@4.22.0)
       lodash-es: 4.17.21
       starknet: 4.22.0
@@ -69,8 +76,8 @@ packages:
       - zod
     dev: false
 
-  /@argent/x-window@6.1.1(starknet@4.22.0)(zod@3.21.4):
-    resolution: {integrity: sha512-46vIlT21crzxKuPaZx56VpBrARQSCQAAlYuuRDEeH3R6D9joSI3s+nH5iLZo9mDo6leZVatLPXUdxio16mDnng==}
+  /@argent/x-window@6.4.0(starknet@4.22.0)(zod@3.21.4):
+    resolution: {integrity: sha512-fGFUWCrtnH8OJl+OnvUh/EdCdru8cfnftOls6XgzqwZLqhNC7PMQnKEP3WR+xL+C6pzja1K2hlK84qSap+WMYA==}
     peerDependencies:
       starknet: ^4.21.0
       zod: ^3.20.6
@@ -1224,6 +1231,19 @@ packages:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
     dev: false
+
+  /ws@8.13.0:
+    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: true
 
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
