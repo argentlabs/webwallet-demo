@@ -14,7 +14,7 @@ import { WalletDetails } from "./WalletDetails";
  * https://web.staging.argent47.net -> mainnet-alpha
  * https://web.argent.xyz -> mainnet-alpha
  */
-const WW_URL = "https://web.hydrogen.argent47.net";
+const WW_URL = "https://web.argent.xyz";
 
 function App() {
   const [connection, setConnection] = useState<
