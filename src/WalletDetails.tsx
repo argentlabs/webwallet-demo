@@ -1,10 +1,10 @@
 import { ConnectedStarknetWindowObject } from "@argent/get-starknet";
 import { FC, useState } from "react";
-import { number, stark, uint256 } from "starknet";
+import { uint256 } from "starknet";
 
-export const WalletDetails: FC<{ wallet: ConnectedStarknetWindowObject }> = ({
-  wallet,
-}) => {
+export const WalletDetails: FC<{
+  wallet: Pick<ConnectedStarknetWindowObject, "account" | "name" | "chainId">;
+}> = ({ wallet }) => {
   const [txHash, setTxHash] = useState<string>();
   const [signature, setSignature] = useState<string[]>();
 
@@ -31,17 +31,16 @@ export const WalletDetails: FC<{ wallet: ConnectedStarknetWindowObject }> = ({
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <button
                     onClick={async () => {
+                      const uint256Value = uint256.bnToUint256(400000000000n);
                       const tx = await wallet.account.execute({
                         contractAddress:
                           "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7", // eth contract address
                         entrypoint: "transfer", // eth contract entrypoint
-                        calldata: stark.compileCalldata({
-                          to: wallet.account.address,
-                          value: {
-                            type: "struct",
-                            ...uint256.bnToUint256(number.toBN(400000000000)),
-                          },
-                        }),
+                        calldata: [
+                          wallet.account.address,
+                          uint256Value.low,
+                          uint256Value.high,
+                        ],
                       });
 
                       console.log("transaction submitted", tx.transaction_hash);

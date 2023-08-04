@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
-  connect,
-  disconnect,
-  ConnectedStarknetWindowObject,
-} from "@argent/get-starknet";
+  StarknetConfig,
+  useAccount,
+  InjectedConnector,
+  Connector,
+} from "@starknet-react/core";
 import { WalletDetails } from "./WalletDetails";
+import { ConnectedStarknetWindowObject } from "get-starknet-core";
+import { WebWalletConnector } from "@argent/starknet-react-webwallet-connector";
+import { ConnectButton } from "./ConnectButton";
+import { constants } from "starknet";
 
 /**
  * Map a target URL to a network ID
@@ -16,60 +21,41 @@ import { WalletDetails } from "./WalletDetails";
  */
 const WW_URL = "https://web.hydrogen.argent47.net";
 
-function App() {
-  const [connection, setConnection] = useState<
-    ConnectedStarknetWindowObject | undefined
-  >();
-
-  useEffect(() => {
-    const connectToStarknet = async () => {
-      const connection = await connect({
-        modalMode: "neverAsk",
-        webWalletUrl: WW_URL,
-      }); // try to reconnect to a previously used wallet
-
-      if (connection && connection.isConnected) {
-        setConnection(connection);
-      }
-    };
-    connectToStarknet();
-  }, []);
-
+const Content: FC = () => {
+  const { account, connector } = useAccount();
   return (
-    <div className="flex flex-col items-center justify-center h-screen space-y-4">
-      <h1 className="text-4xl font-bold">Some Cool Dapp!</h1>
-      <div className="flex flex-col items-center justify-center space-y-4">
-        {!connection ? (
-          <button
-            onClick={async () => {
-              const connection = await connect({
-                webWalletUrl: WW_URL,
-              });
-
-              if (connection && connection.isConnected) {
-                setConnection(connection);
-              }
-            }}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Connect wallet
-          </button>
-        ) : (
-          <>
-            <WalletDetails wallet={connection} />
-            <button
-              onClick={async () => {
-                await disconnect();
-                setConnection(undefined);
-              }}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Disconnect wallet
-            </button>
-          </>
-        )}
-      </div>
+    <div className="flex flex-col items-center justify-center space-y-4">
+      {!account || !connector ? (
+        <ConnectButton />
+      ) : (
+        <WalletDetails
+          wallet={{
+            account: account as ConnectedStarknetWindowObject["account"],
+            name: connector.name,
+            chainId: constants.StarknetChainId.SN_GOERLI,
+          }}
+        />
+      )}
     </div>
+  );
+};
+
+function App() {
+  return (
+    <StarknetConfig
+      connectors={[
+        new InjectedConnector({ options: { id: "braavos" } }),
+        new InjectedConnector({ options: { id: "argentX" } }),
+        new WebWalletConnector({
+          url: WW_URL,
+        }) as unknown as Connector,
+      ]}
+    >
+      <div className="flex flex-col items-center justify-center h-screen space-y-4">
+        <h1 className="text-4xl font-bold">Some Cool Dapp!</h1>
+        <Content />
+      </div>
+    </StarknetConfig>
   );
 }
 
